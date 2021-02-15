@@ -28,8 +28,8 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) {
-        console.log("Current state is: " + JSON.stringify(values));
-        alert("Current state is: " + JSON.stringify(values));
+        this.toggleModal();
+        this.props.addComment(this.props.campsiteId, values.rating, values.author, values.text);
     }
 
     render() {
@@ -47,13 +47,22 @@ class CommentForm extends Component {
                         <LocalForm onSubmit={values => this.handleSubmit(values)}>
                             <div className="form-group">
                                 <Label htmlFor="rating">Rating</Label>
-                                <Control.select model=".rating" name="rating" className="form-control">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
+                                <Control.select model=".rating" name="rating" className="form-control" validators={{required}}>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
                                 </Control.select>
+                                <Errors
+                                    className="text-danger"
+                                    model=".rating"
+                                    show="touched"
+                                    component="div"
+                                    messages={{
+                                        required: 'Required'
+                                    }}
+                                />
                             </div>
                             <div className="form-group">
                                 <Label htmlFor="author">Your Name</Label>
@@ -108,7 +117,7 @@ function RenderCampsite({campsite}){
     );
 }
 
-function RenderComments({comments}){
+function RenderComments({comments, addComment, campsiteId}){
     if (comments){
         return(
             <div class="col-md-5 m-1">
@@ -122,7 +131,7 @@ function RenderComments({comments}){
                         </div>
                     );
                 })}
-                <CommentForm />
+                <CommentForm campsiteId={campsiteId} addComment={addComment}/>
             </div>
         );
     }
@@ -145,7 +154,11 @@ function CampsiteInfo(props) {
                 </div>
                 <div className="row">
                     <RenderCampsite campsite={props.campsite} />
-                    <RenderComments comments={props.comments} />
+                    <RenderComments
+                        comments={props.comments}
+                        addComment={props.addComment}
+                        campsiteId={props.campsite.id}
+                    />
                 </div>
             </div>
         );
