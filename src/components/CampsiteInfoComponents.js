@@ -49,6 +49,7 @@ class CommentForm extends Component {
                         <LocalForm onSubmit={values => this.handleSubmit(values)}>
                             <div className="form-group">
                                 <Label htmlFor="rating">Rating</Label>
+                                {/* eslint-disable-next-line */}
                                 <Control.select model=".rating" name="rating" className="form-control" validators={{required}}>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -68,6 +69,7 @@ class CommentForm extends Component {
                             </div>
                             <div className="form-group">
                                 <Label htmlFor="author">Your Name</Label>
+                                {/* eslint-disable-next-line */}
                                 <Control.text model=".author" id="author" name="author"
                                     placeholder="Your Name"
                                     className="form-control"
@@ -91,6 +93,7 @@ class CommentForm extends Component {
                             </div>
                             <div className="form-group">
                                 <Label htmlFor="text">Comment</Label>
+                                {/* eslint-disable-next-line */}
                                 <Control.textarea model=".text" id="text" name="text"
                                     rows="6"
                                     className="form-control"
