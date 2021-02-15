@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody, Breadcrumb, BreadcrumbItem,
+    Button, Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
+import { Loading } from './LoadingComponent';
 
 const required = val => val && val.length;
 const maxLength = len => val => !val || (val.length <= len);
@@ -106,7 +108,7 @@ class CommentForm extends Component {
 
 function RenderCampsite({campsite}){
     return(
-        <div class="col-md-5 m-1">
+        <div className="col-md-5 m-1">
             <Card>
                 <CardImg top src={campsite.image} alt={campsite.name} />
                 <CardBody>
@@ -120,7 +122,7 @@ function RenderCampsite({campsite}){
 function RenderComments({comments, addComment, campsiteId}){
     if (comments){
         return(
-            <div class="col-md-5 m-1">
+            <div className="col-md-5 m-1">
                 <h4>Comments</h4>
                 {comments.map(comment => {
                     return(
@@ -139,7 +141,27 @@ function RenderComments({comments, addComment, campsiteId}){
 }
 
 function CampsiteInfo(props) {
-    if (props.campsite){
+    if (props.isLoading) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    if(props.errMess) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <div className="col">
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+    if (props.campsite) {
         return(
             <div className="container">
                 <div className="row">
