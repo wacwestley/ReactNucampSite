@@ -25,6 +25,11 @@ export const fetchCampsites = () => dispatch => {
         .catch(error => dispatch(campsitesFailed(error.message)));
 };
 
+export const addCampsites = campsites => ({
+    type: ActionTypes.ADD_CAMPSITES,
+    payload: campsites
+});
+
 export const campsitesLoading = () => ({
     type: ActionTypes.CAMPSITES_LOADING
 });
@@ -32,11 +37,6 @@ export const campsitesLoading = () => ({
 export const campsitesFailed = errMess => ({
     type: ActionTypes.CAMPSITES_FAILED,
     payload: errMess
-});
-
-export const addCampsites = campsites => ({
-    type: ActionTypes.ADD_CAMPSITES,
-    payload: campsites
 });
 
 export const fetchComments = () => dispatch => {
@@ -60,9 +60,9 @@ export const fetchComments = () => dispatch => {
         .catch(error => dispatch(commentsFailed(error.message)));
 };
 
-export const commentsFailed = errMess => ({
-    type: ActionTypes.COMMENTS_FAILED,
-    payload: errMess
+export const addComment = comment => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: comment
 });
 
 export const addComments = comments => ({
@@ -70,11 +70,10 @@ export const addComments = comments => ({
     payload: comments
 });
 
-export const addComment = comment => ({
-    type: ActionTypes.ADD_COMMENT,
-    payload: comment
+export const commentsFailed = errMess => ({
+    type: ActionTypes.COMMENTS_FAILED,
+    payload: errMess
 });
-
 
 export const postComment = (campsiteId, rating, author, text) => dispatch => {
     const newComment = {                  // can also be written like...
@@ -135,6 +134,11 @@ export const fetchPromotions = () => dispatch => {
         .catch(error => dispatch(promotionsFailed(error.message)));
 };
 
+export const addPromotions = promotions => ({
+    type: ActionTypes.ADD_PROMOTIONS,
+    payload: promotions
+});
+
 export const promotionsLoading = () => ({
     type: ActionTypes.PROMOTIONS_LOADING
 });
@@ -144,7 +148,75 @@ export const promotionsFailed = errMess => ({
     payload: errMess
 });
 
-export const addPromotions = promotions => ({
-    type: ActionTypes.ADD_PROMOTIONS,
-    payload: promotions
+export const fetchPartners = () => dispatch => {
+
+    dispatch(partnersLoading());
+
+    return fetch(baseUrl + 'partners')
+    .then(response => {
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(`Error ${response.status}: ${response.statusText}`);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            const errMess = new Error(error.message);
+            throw errMess;
+        }
+    )
+    .then(response => response.json())
+    .then(partners => dispatch(addPartners(partners)))
+    .catch(error => dispatch(partnersFailed(error.message)));
+}
+
+export const addPartners = partners => ({
+    type: ActionTypes.ADD_PARTNERS,
+    payload: partners
 });
+
+export const partnersLoading = () => ({
+    type: ActionTypes.PARTNERS_LOADING
+});
+
+export const partnersFailed = errMess => ({
+    type: ActionTypes.PARTNERS_FAILED,
+    payload: errMess
+});
+
+export const postFeedback = (feedback) => () => {
+    return fetch(baseUrl + "feedback", {
+      method: "POST",
+      body: JSON.stringify(feedback),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            const error = new Error(
+              `Error ${response.status}: ${response.statusText}`
+            );
+            error.response = response;
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((response) => response.json())
+      .then((response) => {
+        console.log("Feedback: ", response);
+        alert("Thank you for your feedback!\n" + JSON.stringify(response));
+      })
+      .catch((error) => {
+        console.log("Feedback: ", error.message);
+        alert("Your feedback could not be posted\nError: " + error.message);
+      });
+  };
