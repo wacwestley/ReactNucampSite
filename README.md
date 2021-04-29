@@ -9,6 +9,7 @@ Please have separate repo running alongside the Nucampsite App.
 "JSON_Server_React_Nucampsite"
 https://github.com/wacwestley/JSON_Server_React_Nucampsite
 
-ONCE JSON IS RUNNING:
+ONCE JSON-SERVER IS RUNNING:
 Begin by starting the app with "yarn start"
 Please make sure you are traveling to http://localhost:3001 for all testing.
+Once finished please type into your terminal "ctrl+c" to end the app.
