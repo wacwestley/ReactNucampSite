@@ -32,7 +32,7 @@ The form then echos back all the information that was input preparing for
 
 /////////////////////////////////////////////////////////////////////////////
 
-If running Locally from github:
+If running locally from github:
 
 BEFORE STARTING:
 Please have separate repo running alongside the Nucampsite App.
